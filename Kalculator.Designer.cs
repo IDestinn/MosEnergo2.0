@@ -73,9 +73,9 @@
             this.CloseButton.Size = new System.Drawing.Size(19, 18);
             this.CloseButton.TabIndex = 9;
             this.CloseButton.Text = "X";
-            this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
-            this.CloseButton.MouseEnter += new System.EventHandler(this.CloseButton_MouseEnter);
-            this.CloseButton.MouseLeave += new System.EventHandler(this.CloseButton_MouseLeave);
+            this.CloseButton.Click += new System.EventHandler(FormMethods.CloseButton_Click);
+            this.CloseButton.MouseEnter += new System.EventHandler(FormMethods.CloseButton_MouseEnter);
+            this.CloseButton.MouseLeave += new System.EventHandler(FormMethods.CloseButton_MouseLeave);
             // 
             // MainPanel
             // 
@@ -97,8 +97,8 @@
             this.MainPanel.Name = "MainPanel";
             this.MainPanel.Size = new System.Drawing.Size(650, 350);
             this.MainPanel.TabIndex = 11;
-            this.MainPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainPanel_MouseDown);
-            this.MainPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainPanel_MouseMove);
+            this.MainPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(FormMethods.MainPanel_MouseDown);
+            this.MainPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(FormMethods.MainPanel_MouseMove);
             // 
             // ResultNumber
             // 
@@ -275,7 +275,7 @@
             this.Tarif1.Name = "Tarif1";
             this.Tarif1.Size = new System.Drawing.Size(207, 31);
             this.Tarif1.TabIndex = 1;
-            this.Tarif1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Tarif1_KeyPress);
+            this.Tarif1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Tarif_KeyPress);
             // 
             // T2Label
             // 
@@ -299,7 +299,7 @@
             this.Tarif2.Name = "Tarif2";
             this.Tarif2.Size = new System.Drawing.Size(207, 31);
             this.Tarif2.TabIndex = 2;
-            this.Tarif2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Tarif2_KeyPress);
+            this.Tarif2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Tarif_KeyPress);
             // 
             // T1Label
             // 
@@ -323,7 +323,7 @@
             this.Tarif3.Name = "Tarif3";
             this.Tarif3.Size = new System.Drawing.Size(207, 31);
             this.Tarif3.TabIndex = 3;
-            this.Tarif3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Tarif3_KeyPress);
+            this.Tarif3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Tarif_KeyPress);
             // 
             // TypyGB
             // 

@@ -15,21 +15,6 @@ namespace MosEnergo2._0
             InitializeComponent();
         }
 
-        private void CloseButton_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void CloseButton_MouseLeave(object sender, EventArgs e)
-        {
-            CloseButton.ForeColor = Color.Silver;
-        }
-
-        private void CloseButton_MouseEnter(object sender, EventArgs e)
-        {
-            CloseButton.ForeColor = Color.Red;
-        }
-
         private void LogOutButton_Click(object sender, EventArgs e)
         {
             this.Hide();
@@ -96,31 +81,31 @@ namespace MosEnergo2._0
                     MTarif1 = (double)(table2.Rows[0][5]);
                     Tarif2.Text = null;
                     Tarif3.Text = null;
-                    Total = Math.Round(((Convert.ToDouble(Tarif1.Text) - (double)(MinT1))* MTarif1),2);
-                }    
+                    Total = Math.Round(((Convert.ToDouble(Tarif1.Text) - MinT1) * MTarif1), 2);
+                }
                 if (Convert.ToInt16(table3.Rows[0][2]) == 2)
                 {
                     MTarif1 = (double)(table2.Rows[0][3]);
                     MTarif2 = (double)(table2.Rows[0][4]);
                     Tarif3.Text = null;
-                    Total = Math.Round(((Convert.ToDouble(Tarif1.Text) - (double)(MinT1)) * MTarif1) + ((Convert.ToDouble(Tarif2.Text) - (double)(MinT2)) * MTarif2),2);
+                    Total = Math.Round(((Convert.ToDouble(Tarif1.Text) - MinT1) * MTarif1) + ((Convert.ToDouble(Tarif2.Text) - MinT2) * MTarif2), 2);
                 }
                 if (Convert.ToInt16(table3.Rows[0][2]) == 3)
                 {
                     MTarif1 = (double)(table2.Rows[0][6]);
                     MTarif2 = (double)(table2.Rows[0][4]);
                     MTarif3 = (double)(table2.Rows[0][5]);
-                    Total = Math.Round(((Convert.ToDouble(Tarif1.Text) - (double)(MinT1)) * MTarif1) + 
-                        ((Convert.ToDouble(Tarif2.Text) - (double)(MinT2)) * MTarif2) +
-                        ((Convert.ToDouble(Tarif3.Text) - (double)(MinT3)) * MTarif3),2);
+                    Total = Math.Round(((Convert.ToDouble(Tarif1.Text) - MinT1) * MTarif1) +
+                        ((Convert.ToDouble(Tarif2.Text) - MinT2) * MTarif2) +
+                        ((Convert.ToDouble(Tarif3.Text) - MinT3) * MTarif3), 2);
                 }
-                
+
                 ResultNumber.Text = Convert.ToString(Math.Round(Total, 2));
             }
             else
             {
                 MTarif1 = (double)(table2.Rows[0][2]);
-                Total = Math.Round(MTarif1 * Convert.ToUInt16(table.Rows[0][3]),2);
+                Total = Math.Round(MTarif1 * Convert.ToUInt16(table.Rows[0][3]), 2);
                 ResultNumber.Text = Convert.ToString(Math.Round(Total, 2));
                 Tarif1.Text = null;
                 Tarif2.Text = null;
@@ -163,11 +148,11 @@ namespace MosEnergo2._0
 
             db.CloseConnection();
         }
-        
+
         public double MinT1;
         public double MinT2;
         public double MinT3;
-        
+
         // Метод заполняющий информацию о выбранной квартире 
         private void Flat_Load(object sender, EventArgs e)
         {
@@ -221,7 +206,7 @@ namespace MosEnergo2._0
                         }
                         else
                             HistoryLabel.Text =
-                            "Т1: 0\nТ2: 0\nТ3: 0" ;
+                            "Т1: 0\nТ2: 0\nТ3: 0";
 
                         break;
                     case 2:
@@ -254,7 +239,7 @@ namespace MosEnergo2._0
                             "Т1: 0";
                         break;
                 }
-            }  
+            }
             else
             {
                 HouseLabel.Text += "\nСчетчик: Нет счетчика";
@@ -275,21 +260,6 @@ namespace MosEnergo2._0
                 HouseLabel.Text += "\nСельская местность ❌";
             else
                 HouseLabel.Text += "\nСельская местность ✔";
-        }
-
-        Point LastPoint;
-        private void MainPanel_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                this.Left += e.X - LastPoint.X;
-                this.Top += e.Y - LastPoint.Y;
-            }
-        }
-
-        private void MainPanel_MouseDown(object sender, MouseEventArgs e)
-        {
-            LastPoint = new Point(e.X, e.Y);
         }
 
         // Метод для удаления информации о квартире 
@@ -318,7 +288,7 @@ namespace MosEnergo2._0
             adapter.Fill(table2);
 
             db.OpenConnection();
-            if(table2.Rows.Count > 0)
+            if (table2.Rows.Count > 0)
             {
                 if (table.Rows.Count > 0)
                 {

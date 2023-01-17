@@ -1,7 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Data;
-using System.Drawing;
 using System.Windows.Forms;
 
 
@@ -12,36 +11,6 @@ namespace MosEnergo2._0
         public Kalculator()
         {
             InitializeComponent();
-        }
-
-        private void CloseButton_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void CloseButton_MouseEnter(object sender, EventArgs e)
-        {
-            CloseButton.ForeColor = Color.Red;
-        }
-
-        private void CloseButton_MouseLeave(object sender, EventArgs e)
-        {
-            CloseButton.ForeColor = Color.Silver;
-        }
-
-        Point LastPoint;
-        private void MainPanel_MouseDown(object sender, MouseEventArgs e)
-        {
-            LastPoint = new Point(e.X, e.Y);
-        }
-
-        private void MainPanel_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                this.Left += e.X - LastPoint.X;
-                this.Top += e.Y - LastPoint.Y;
-            }
         }
 
         private void LogOutButton_Click(object sender, EventArgs e)
@@ -170,9 +139,9 @@ namespace MosEnergo2._0
             {
                 adapter.SelectCommand = command;
                 adapter.Fill(table);
-            
-            // Фунукция расчета общей суммы выплаты 
-            if (NoneRB.Checked == true)
+
+                // Фунукция расчета общей суммы выплаты 
+                if (NoneRB.Checked == true)
                 {
                     MTarif1 = Convert.ToDouble(table.Rows[0][2]);
                     Total = Math.Round(MTarif1 * Convert.ToUInt16(PeopleBox.Text), 2);
@@ -199,54 +168,37 @@ namespace MosEnergo2._0
                 }
                 ResultNumber.Text = Convert.ToString(Total);
             }
+            catch (AggregateException)
+            {
+                MessageBox.Show(this, "Не удалось подключиться к базе данных!"
+                , "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             catch (MySqlException)
             {
-                MessageBox.Show(this, "Не удалось подключиться к базе данных!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, "Ошибка MySQL!"
+                , "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(this, "Неизвестная ошибка!\nОписание ошибки:\n"
+                + err, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         // Проверка ввода
-        private void Tarif1_KeyPress(object sender, KeyPressEventArgs e)
+        private void Tarif_KeyPress(object sender, KeyPressEventArgs e)
         {
+            TextBox textBox = sender as TextBox;
             if ((e.KeyChar < 48 || e.KeyChar >= 58) && e.KeyChar != 8 && e.KeyChar != 44)
                 e.Handled = true;
-            if (e.KeyChar == 44 && Tarif1.TextLength == 0)
+            if (e.KeyChar == 44 && textBox.TextLength == 0)
             {
                 e.KeyChar = (char)8;
-                Tarif1.Text = "0,0";
-                Tarif1.SelectionStart = 3;
+                textBox.Text = "0,0";
+                textBox.SelectionStart = 3;
             }
-            if (e.KeyChar == 8 && Tarif1.Text == "0,")
-                Tarif2.Text = "";
-        }
-
-        private void Tarif2_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if ((e.KeyChar < 48 || e.KeyChar >= 58) && e.KeyChar != 8 && e.KeyChar != 44)
-                e.Handled = true;
-            if (e.KeyChar == 44 && Tarif2.TextLength == 0)
-            {
-                e.KeyChar = (char)8;
-                Tarif2.Text = "0,0";
-                Tarif2.SelectionStart = 3;
-            }
-            if (e.KeyChar == 8 && Tarif2.Text == "0,")
-                Tarif2.Text = "";
-        }
-
-        private void Tarif3_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if ((e.KeyChar < 48 || e.KeyChar >= 58) && e.KeyChar != 8 && e.KeyChar != 44)
-                    e.Handled = true;
-            if (e.KeyChar == 44 && Tarif3.TextLength == 0)
-            {
-                e.KeyChar = (char)8;
-                Tarif3.Text = "0,0";
-                Tarif3.SelectionStart = 3;
-            }
-            if (e.KeyChar == 8 && Tarif3.Text == "0,")
-                Tarif3.Text = "";
-
+            if (e.KeyChar == 8 && textBox.Text == "0,")
+                textBox.Text = "";
         }
 
         private void PeopleBox_KeyPress(object sender, KeyPressEventArgs e)

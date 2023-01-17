@@ -92,6 +92,7 @@
       <DependentUpon>AddFlatMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="Checki.cs" />
+    <Compile Include="FormMethods.cs" />
     <Compile Include="HasherMD5.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="Flat.cs">

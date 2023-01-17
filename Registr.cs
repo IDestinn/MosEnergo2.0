@@ -15,37 +15,6 @@ namespace MosEnergo2._0
             TipPatronymic.SetToolTip(PatronymicLabel, "Необязательное поле");
         }
 
-        private void CloseButton_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void CloseButton_MouseEnter(object sender, EventArgs e)
-        {
-            CloseButton.ForeColor = Color.Red;
-        }
-
-        private void CloseButton_MouseLeave(object sender, EventArgs e)
-        {
-            CloseButton.ForeColor = Color.Silver;
-        }
-
-        Point LastPoint;
-
-        private void MainPanel_MouseDown(object sender, MouseEventArgs e)
-        {
-            LastPoint = new Point(e.X, e.Y);
-        }
-
-        private void MainPanel_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                this.Left += e.X - LastPoint.X;
-                this.Top += e.Y - LastPoint.Y;
-            }
-        }
-
         private void ToSignInButton_Click(object sender, EventArgs e)
         {
             this.Hide();
@@ -97,13 +66,13 @@ namespace MosEnergo2._0
 
             if (IsPassportExist() == true)
                 return;
-            
- 
-                DB db = new DB();
-                MySqlCommand command = new MySqlCommand("INSERT INTO `semshik` (`passport`, `firstname`, `lastname`, `patronymic`) VALUES (@Passport,@FN,@LN,@Patron);", db.GetConnection());
-                MySqlCommand command2 = new MySqlCommand("INSERT INTO `users` (`login`, `password`, `semshik_passport`) VALUES (@Login,@Password,@Passport);", db.GetConnection());
-              try
-              {  
+
+
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("INSERT INTO `semshik` (`passport`, `firstname`, `lastname`, `patronymic`) VALUES (@Passport,@FN,@LN,@Patron);", db.GetConnection());
+            MySqlCommand command2 = new MySqlCommand("INSERT INTO `users` (`login`, `password`, `semshik_passport`) VALUES (@Login,@Password,@Passport);", db.GetConnection());
+            try
+            {
                 command.Parameters.Add("@Passport", MySqlDbType.VarChar).Value = PassportField.Text;
                 command.Parameters.Add("@FN", MySqlDbType.VarChar).Value = FirstNameField.Text;
                 command.Parameters.Add("@LN", MySqlDbType.VarChar).Value = LastNameField.Text;
@@ -125,12 +94,12 @@ namespace MosEnergo2._0
                     MessageBox.Show(this, "Аккаунт не был создан! ;c", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 db.CloseConnection();
-              }
+            }
             catch (MySqlException)
-              {
+            {
                 MessageBox.Show(this, "Не удалось подключиться к базе данных!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-              }
-         }
+            }
+        }
 
         // Проверка на совпадения логина
         public Boolean IsUserExist()
@@ -177,8 +146,8 @@ namespace MosEnergo2._0
             command.Parameters.Add("@Passport", MySqlDbType.VarChar).Value = PassportField.Text;
             try
             {
-            adapter.SelectCommand = command;
-            adapter.Fill(table);
+                adapter.SelectCommand = command;
+                adapter.Fill(table);
             }
             catch (AggregateException)
             {

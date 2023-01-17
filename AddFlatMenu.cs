@@ -26,23 +26,8 @@ namespace MosEnergo2._0
             MySqlCommand command = new MySqlCommand("SELECT address FROM `dom`", db.GetConnection());
             adapter.SelectCommand = command;
             adapter.Fill(table);
-            for (int i = 0; i < table.Rows.Count; i++) 
-            HousesBox.Items.Add(table.Rows[i][0]);
-        }
-
-        private void CloseButton_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void CloseButton_MouseEnter(object sender, EventArgs e)
-        {
-            CloseButton.ForeColor = Color.Red;
-        }
-
-        private void CloseButton_MouseLeave(object sender, EventArgs e)
-        {
-            CloseButton.ForeColor = Color.Silver;
+            for (int i = 0; i < table.Rows.Count; i++)
+                HousesBox.Items.Add(table.Rows[i][0]);
         }
 
         private void LogOutButton_Click(object sender, EventArgs e)
@@ -53,26 +38,10 @@ namespace MosEnergo2._0
             kvartiraMenu.Show();
         }
 
-
-        Point LastPoint;
-        private void MainPanel_MouseDown(object sender, MouseEventArgs e)
-        {
-            LastPoint = new Point(e.X, e.Y);
-        }
-
-        private void MainPanel_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                this.Left += e.X - LastPoint.X;
-                this.Top += e.Y - LastPoint.Y;
-            }
-        }
-        
         // Изменение интерфейса в зависимости от статуса флажка
         private void SeloCheck_CheckedChanged(object sender, EventArgs e)
         {
-            
+
             if (SeloCheck.Checked == true)
             {
                 OwnerField.Visible = false;
@@ -185,7 +154,7 @@ namespace MosEnergo2._0
                 e.Handled = true;
             }
         }
-        
+
         public string UserPassport;
         private void AddButton_Click(object sender, EventArgs e)
         {
@@ -301,10 +270,10 @@ namespace MosEnergo2._0
                 command2.Parameters.Add("@EHeater", MySqlDbType.Bit).Value = 1;
 
             command2.Parameters.Add("@SPassport", MySqlDbType.VarChar).Value = UserPassport;
-          if (HouseExist.Checked == false)
-            command2.Parameters.Add("@Adress", MySqlDbType.VarChar).Value = AdressField.Text;
-          else
-            command2.Parameters.Add("@Adress", MySqlDbType.VarChar).Value = HousesBox.SelectedItem.ToString();
+            if (HouseExist.Checked == false)
+                command2.Parameters.Add("@Adress", MySqlDbType.VarChar).Value = AdressField.Text;
+            else
+                command2.Parameters.Add("@Adress", MySqlDbType.VarChar).Value = HousesBox.SelectedItem.ToString();
 
             if (ShetchikExistCheck.Checked == false)
             {
@@ -327,7 +296,7 @@ namespace MosEnergo2._0
 
                 command3.Parameters.Add("@Factor", MySqlDbType.Double).Value = (FactorField.Text == "" ? null : FactorField.Text);
             }
-            
+
             // Ввод запроса в БД
             if (HouseExist.Checked == false)
             {
@@ -345,7 +314,7 @@ namespace MosEnergo2._0
                         command3.Parameters.Add("@IDKvartira", MySqlDbType.UInt32).Value = table.Rows[0][0];
                         db.OpenConnection();
                         if (command3.ExecuteNonQuery() == 1)
-                        MessageBox.Show(this, "Квартира была добавленна!", "Успех!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show(this, "Квартира была добавленна!", "Успех!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                         MessageBox.Show(this, "Квартира не была добавленна!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -360,7 +329,7 @@ namespace MosEnergo2._0
                 {
                     db.OpenConnection();
 
-                        if (command.ExecuteNonQuery() == 1 && command2.ExecuteNonQuery() == 1)
+                    if (command.ExecuteNonQuery() == 1 && command2.ExecuteNonQuery() == 1)
                         MessageBox.Show(this, "Квартира была добавленна!", "Успех!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     else
                         MessageBox.Show(this, "Квартира не была добавленна!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -390,7 +359,7 @@ namespace MosEnergo2._0
                         if (command3.ExecuteNonQuery() == 1)
                             MessageBox.Show(this, "Квартира была добавленна!", "Успех!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         db.CloseConnection();
-                    }      
+                    }
                     else
                         MessageBox.Show(this, "Квартира не была добавленна!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -415,7 +384,7 @@ namespace MosEnergo2._0
                     kvartiraMenu.UserPassport = UserPassport;
                     kvartiraMenu.Show();
                 }
-            }       
+            }
         }
 
         // Проверка ввода фазности

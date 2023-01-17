@@ -28,7 +28,7 @@ namespace MosEnergo2._0
             command.Parameters.Add("@IDKvartira", MySqlDbType.UInt32).Value = IDKvartiri;
             adapter.SelectCommand = command;
             adapter.Fill(table);
-            
+
             for (int i = 0; i < table.Rows.Count; i++)
             {
                 if (!DBNull.Value.Equals(table.Rows[i][3]))
@@ -79,36 +79,6 @@ namespace MosEnergo2._0
                 }
             }
             return list;
-        }
-
-        Point LastPoint;
-        private void HistoryForm_MouseDown(object sender, MouseEventArgs e)
-        {
-            LastPoint = new Point(e.X, e.Y);
-        }
-
-        private void HistoryForm_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                this.Left += e.X - LastPoint.X;
-                this.Top += e.Y - LastPoint.Y;
-            }
-        }
-
-        private void CloseButton_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void CloseButton_MouseLeave(object sender, EventArgs e)
-        {
-            CloseButton.ForeColor = Color.Silver;
-        }
-
-        private void CloseButton_MouseEnter(object sender, EventArgs e)
-        {
-            CloseButton.ForeColor = Color.Red;
         }
 
         private void LogOutButton_Click(object sender, EventArgs e)
@@ -239,29 +209,29 @@ namespace MosEnergo2._0
                     MTarif1 = (double)(table2.Rows[0][5]);
                     Tarif2.Text = null;
                     Tarif3.Text = null;
-                    Total = Math.Round(((Convert.ToDouble(Tarif1.Text) - (double)(MinT1)) * MTarif1),2) ;
+                    Total = Math.Round(((Convert.ToDouble(Tarif1.Text) - MinT1) * MTarif1), 2);
                 }
                 if (Convert.ToInt16(table3.Rows[0][2]) == 2)
                 {
                     MTarif1 = (double)(table2.Rows[0][3]);
                     MTarif2 = (double)(table2.Rows[0][4]);
                     Tarif3.Text = null;
-                    Total = Math.Round(((Convert.ToDouble(Tarif1.Text) - (double)(MinT1)) * MTarif1) + ((Convert.ToDouble(Tarif2.Text) - (double)(MinT2)) * MTarif2),2);
+                    Total = Math.Round(((Convert.ToDouble(Tarif1.Text) - MinT1) * MTarif1) + ((Convert.ToDouble(Tarif2.Text) - MinT2) * MTarif2), 2);
                 }
                 if (Convert.ToInt16(table3.Rows[0][2]) == 3)
                 {
                     MTarif1 = (double)(table2.Rows[0][6]);
                     MTarif2 = (double)(table2.Rows[0][4]);
                     MTarif3 = (double)(table2.Rows[0][5]);
-                    Total = Math.Round(((Convert.ToDouble(Tarif1.Text) - (double)(MinT1)) * MTarif1) +
-                        ((Convert.ToDouble(Tarif2.Text) - (double)(MinT2)) * MTarif2) +
-                        ((Convert.ToDouble(Tarif3.Text) - (double)(MinT3)) * MTarif3),2);
+                    Total = Math.Round(((Convert.ToDouble(Tarif1.Text) - MinT1) * MTarif1) +
+                        ((Convert.ToDouble(Tarif2.Text) - MinT2) * MTarif2) +
+                        ((Convert.ToDouble(Tarif3.Text) - MinT3) * MTarif3), 2);
                 }
             }
             else
             {
                 MTarif1 = (double)(table2.Rows[0][2]);
-                Total = Math.Round(MTarif1 * Convert.ToUInt16(table.Rows[0][3]),2);
+                Total = Math.Round(MTarif1 * Convert.ToUInt16(table.Rows[0][3]), 2);
                 Tarif1.Text = null;
                 Tarif2.Text = null;
                 Tarif3.Text = null;
@@ -398,9 +368,9 @@ namespace MosEnergo2._0
             // Параметры составления шаблона
             if (table3.Rows.Count == 0)
             {
-                    helper = new WordHelper("ШаблонСчетаNone.docx");
+                helper = new WordHelper("ШаблонСчетаNone.docx");
 
-                    items = new Dictionary<string, string>
+                items = new Dictionary<string, string>
                 {
                 {"<date>", table4.Rows[0][5].ToString().Replace("0:00:00","") }, //check
                 {"<FIO>", table5.Rows[0][1].ToString() + " " + table5.Rows[0][2].ToString() + " " +table5.Rows[0][3].ToString()}, //semshikc

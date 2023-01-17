@@ -14,12 +14,12 @@ namespace MosEnergo2._0
             "charset=utf8;" +
             "database=energo"
         );
-        
+
         public void OpenConnection()
         {
             if (connection.State == System.Data.ConnectionState.Closed)
             {
-                connection.Open();               
+                connection.Open();
             }
         }
 

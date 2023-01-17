@@ -40,7 +40,7 @@ namespace MosEnergo2._0
                 app.Documents.Open(file);
 
                 // Замена шаблона на данные
-                foreach(var item in items)
+                foreach (var item in items)
                 {
                     Word.Find find = app.Selection.Find;
                     find.Text = item.Key;
@@ -80,7 +80,7 @@ namespace MosEnergo2._0
 
                 return true;
             }
-            catch(Exception ex) { Console.WriteLine(ex.Message);}
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
             finally
             {
                 app?.Quit();

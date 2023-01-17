@@ -61,9 +61,9 @@
             this.CloseButton.Size = new System.Drawing.Size(19, 18);
             this.CloseButton.TabIndex = 10;
             this.CloseButton.Text = "X";
-            this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
-            this.CloseButton.MouseEnter += new System.EventHandler(this.CloseButton_MouseEnter);
-            this.CloseButton.MouseLeave += new System.EventHandler(this.CloseButton_MouseLeave);
+            this.CloseButton.Click += new System.EventHandler(FormMethods.CloseButton_Click);
+            this.CloseButton.MouseEnter += new System.EventHandler(FormMethods.CloseButton_MouseEnter);
+            this.CloseButton.MouseLeave += new System.EventHandler(FormMethods.CloseButton_MouseLeave);
             // 
             // LogOutButton
             // 
@@ -283,8 +283,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "История чеков";
             this.Load += new System.EventHandler(this.HistoryForm_Load);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HistoryForm_MouseDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HistoryForm_MouseMove);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(FormMethods.MainPanel_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(FormMethods.MainPanel_MouseMove);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridViewChechi)).EndInit();
             this.PokazaniyaPanel.ResumeLayout(false);
             this.PokazaniyaPanel.PerformLayout();

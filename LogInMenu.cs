@@ -1,8 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Data;
-using System.Drawing;
-using System.Windows.Forms; 
+using System.Windows.Forms;
 
 namespace MosEnergo2._0
 {
@@ -11,36 +10,6 @@ namespace MosEnergo2._0
         public LogInMenu()
         {
             InitializeComponent();
-        }
-
-        private void CloseButton_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void CloseButton_MouseEnter(object sender, EventArgs e)
-        {
-            CloseButton.ForeColor = Color.Red;
-        }
-
-        private void CloseButton_MouseLeave(object sender, EventArgs e)
-        {
-            CloseButton.ForeColor = Color.Silver;
-        }
-
-        Point LastPoint;
-        private void MainPanel_MouseMove(object sender, MouseEventArgs e)
-        {
-          if(e.Button == MouseButtons.Left)
-            {
-                this.Left += e.X - LastPoint.X;
-                this.Top += e.Y - LastPoint.Y;
-            }
-        }
-        
-        private void MainPanel_MouseDown(object sender, MouseEventArgs e)
-        {
-            LastPoint = new Point(e.X, e.Y);
         }
 
         private void User_button_Click(object sender, EventArgs e)
@@ -84,24 +53,35 @@ namespace MosEnergo2._0
             {
                 adapter.SelectCommand = command;
                 adapter.Fill(table);
-            
 
-            if(table.Rows.Count > 0)
-            {
-                this.Hide();
-                KvartiraMenu kvartiraMenu = new KvartiraMenu();
-                kvartiraMenu.UserPassport = table.Rows[0][0].ToString();
-                kvartiraMenu.Show();
-            }
-            else
-            {
-                MessageBox.Show(this, "Неверный логин или пароль!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
 
+                if (table.Rows.Count > 0)
+                {
+                    this.Hide();
+                    KvartiraMenu kvartiraMenu = new KvartiraMenu();
+                    kvartiraMenu.UserPassport = table.Rows[0][0].ToString();
+                    kvartiraMenu.Show();
+                }
+                else
+                {
+                    MessageBox.Show(this, "Неверный логин или пароль!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+            catch (AggregateException)
+            {
+                MessageBox.Show(this, "Не удалось подключиться к базе данных!"
+                , "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (MySqlException)
             {
-                MessageBox.Show(this, "Не удалось подключиться к базе данных!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, "Ошибка MySQL!"
+                , "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(this, "Неизвестная ошибка!\nОписание ошибки:\n"
+                + err, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

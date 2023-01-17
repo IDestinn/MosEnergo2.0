@@ -13,37 +13,7 @@ namespace MosEnergo2._0
         {
             InitializeComponent();
         }
-
-        private void CloseButton_Click(object sender, EventArgs e)
-        {
-             Application.Exit();
-        }
-
-        private void CloseButton_MouseEnter(object sender, EventArgs e)
-        {
-            CloseButton.ForeColor = Color.Red;
-        }
-
-        private void CloseButton_MouseLeave(object sender, EventArgs e)
-        {
-            CloseButton.ForeColor = Color.Silver;
-        }
-
-        private void MainPanel_MouseDown(object sender, MouseEventArgs e)
-        {
-            LastPoint = new Point(e.X, e.Y);
-        }
-
-        Point LastPoint;
-        private void MainPanel_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                this.Left += e.X - LastPoint.X;
-                this.Top += e.Y - LastPoint.Y;
-            }
-        }
-
+        
         private void LogOutButton_Click(object sender, EventArgs e)
         {
             this.Hide();
@@ -84,9 +54,9 @@ namespace MosEnergo2._0
                 FlatButton5.Visible = true;
                 AddFlatButton.Visible = false;
                 LimitLabel.Visible = true;
-            }   
+            }
         }
-        
+
         // Выбор квартиры
         public UInt32 IDKvartiri;
         private void FlatButton_Click(object sender, EventArgs e)
@@ -113,7 +83,7 @@ namespace MosEnergo2._0
         // Удаление аккаунта
         private void DeliteAkkButton_Click(object sender, EventArgs e)
         {
-            if(FlatButton1.Visible == true)
+            if (FlatButton1.Visible == true)
             {
                 MessageBox.Show(this, "Для подтверждения удаления аккаунта сперва удалите все квартиры!", "Предупреждение!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
