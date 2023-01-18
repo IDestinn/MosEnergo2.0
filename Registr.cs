@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace MosEnergo2._0
@@ -61,6 +62,9 @@ namespace MosEnergo2._0
                 return;
             }
 
+            if (IsPasswordValid() == false)
+                return;
+
             if (IsUserExist() == true)
                 return;
 
@@ -101,8 +105,58 @@ namespace MosEnergo2._0
             }
         }
 
+        public bool IsPasswordValid()
+        {
+            if (PasswordField.Text.Length < 4 || PasswordField.Text.Length > 30)
+            {
+                MessageBox.Show(this, "Пароль должен быть длинной от 4 до 30 символов!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            ////Если нужно проверить на осутствие всех специальных символов
+            //var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
+            //if (regexItem.IsMatch(PassportField.Text))
+            //{
+            //    //Сообщение об ошибке пользователю
+            //    return false;
+            //}
+
+            bool DigitExist = false;
+            bool UpperCaseExist = false;
+
+            foreach (var symbol in PasswordField.Text)
+            {
+
+                if (char.IsDigit(symbol) && DigitExist != true)
+                {
+                    DigitExist = true;
+                }
+                if (char.IsUpper(symbol) == true && UpperCaseExist != true)
+                {
+                    UpperCaseExist = true;
+                }
+                if (symbol.Equals('"'))
+                {
+                    MessageBox.Show(this, "В пароле не должны быть двоиные кавычки!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+            if(DigitExist == false)
+            {
+                MessageBox.Show(this, "Пароль должен содержать хотя бы 1 цифру!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if(UpperCaseExist == false)
+            {
+                MessageBox.Show(this, "Пароль должен содержать хотя бы 1 заглавную букву!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
+        }
+
         // Проверка на совпадения логина
-        public Boolean IsUserExist()
+        public bool IsUserExist()
         {
             DB db = new DB();
 
