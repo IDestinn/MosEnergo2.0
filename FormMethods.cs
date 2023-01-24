@@ -32,11 +32,20 @@ namespace MosEnergo2._0
 
         public static void MainPanel_MouseMove(object sender, MouseEventArgs e)
         {
-            Panel mainPanel = sender as Panel;
-            panelForm = mainPanel.FindForm();
+            Form trackingForm;
+            if (sender is Panel)
+            {
+                Panel mainPanel = sender as Panel;
+                trackingForm = mainPanel.FindForm();
+            }
+            else
+            {
+                trackingForm = sender as Form;
+            }
+            
             if (e.Button == MouseButtons.Left)
             {
-                panelForm.Location = new Point(Cursor.Position.X - LastPoint.X,
+                trackingForm.Location = new Point(Cursor.Position.X - LastPoint.X,
                     Cursor.Position.Y - LastPoint.Y);
             }
         }
