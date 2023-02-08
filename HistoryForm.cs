@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace MosEnergo2._0
@@ -16,7 +15,8 @@ namespace MosEnergo2._0
             InitializeComponent();
         }
 
-        // Собирает чеки по квартире выбранной ранее 
+        // 13.01.2023 13:28:16
+        // Собирает данные о квартире, выбранной из предыдущей формы
         private List<Checki> GetChecks()
         {
             var list = new List<Checki>();
@@ -81,6 +81,8 @@ namespace MosEnergo2._0
             return list;
         }
 
+        // 13.01.2023 13:28:16
+        // Выход из меню "История чеков
         private void LogOutButton_Click(object sender, EventArgs e)
         {
             this.Hide();
@@ -92,6 +94,7 @@ namespace MosEnergo2._0
 
         public List<Checki> checks { get; set; }
 
+        // 13.01.2023 13:28:16
         // Метод для формирования вида интерфейса
         private void HistoryForm_Load(object sender, EventArgs e)
         {
@@ -105,6 +108,7 @@ namespace MosEnergo2._0
             DataGridViewChechi.Columns["Pokaz3"].Visible = false;
         }
 
+        // 13.01.2023 13:28:16
         // Собирает информацию с чека
         private void DataGridViewChechi_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -125,6 +129,7 @@ namespace MosEnergo2._0
         public double MinT2 = 0;
         public double MinT3 = 0;
 
+        // 13.01.2023 13:28:16
         // Редактирование данных в чеке
         private void UpdateButton_Click(object sender, EventArgs e)
         {
@@ -134,9 +139,11 @@ namespace MosEnergo2._0
             double MTarif3;
             double Total = 0;
 
+            // Сохраняет выбранный пользователем чек
             var SelectedCheck = DataGridViewChechi.SelectedRows[0].DataBoundItem as Checki;
 
             Checki NoneSelectedCheck;
+            // Если чек не выбран, выбирает самый новый
             if (DataGridViewChechi.SelectedRows[0].Index != 0)
                 NoneSelectedCheck = DataGridViewChechi.Rows[Convert.ToInt16(DataGridViewChechi.SelectedRows[0].Index) - 1].DataBoundItem as Checki;
             else
@@ -144,6 +151,7 @@ namespace MosEnergo2._0
 
             var LastCheck = Convert.ToUInt32(SelectedCheck.id_check) - 1;
 
+            // Поиск чека для изменения
             DB db = new DB();
             MySqlDataAdapter adapter = new MySqlDataAdapter();
             DataTable table4 = new DataTable();
@@ -166,7 +174,8 @@ namespace MosEnergo2._0
                         MinT3 = Convert.ToDouble(table4.Rows[0][3]);
                 }
             }
-
+            
+            // Транзакция для изменения чека в БД
             DataTable table = new DataTable();
             DataTable table2 = new DataTable();
             DataTable table3 = new DataTable();
@@ -201,6 +210,7 @@ namespace MosEnergo2._0
             adapter.SelectCommand = command3;
             adapter.Fill(table3);
 
+            // 13.01.2023 13:28:16
             // Расчет итоговой функции
             if (table3.Rows.Count > 0)
             {
@@ -245,6 +255,8 @@ namespace MosEnergo2._0
 
             db.OpenConnection();
 
+            // 13.01.2023 13:28:16
+            // Запуск транзакции
             if (command4.ExecuteNonQuery() == 1)
             {
                 MessageBox.Show(this, "Чек обновлен!", "Успех!", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -262,6 +274,7 @@ namespace MosEnergo2._0
             db.CloseConnection();
         }
 
+        // 13.01.2023 13:28:16
         // Удаление данных из БД
         private void DeleteButton_Click(object sender, EventArgs e)
         {
@@ -291,6 +304,7 @@ namespace MosEnergo2._0
             db.CloseConnection();
         }
 
+        // 13.01.2023 13:28:16
         // Метод создания документа
         private void CrateDockButton_Click(object sender, EventArgs e)
         {
@@ -302,6 +316,8 @@ namespace MosEnergo2._0
             else
                 NoneSelectedCheck = SelectedCheck;
 
+            // 08.02.2023 9:36
+            // Создание транзакции в БД
             DB db = new DB();
             MySqlDataAdapter adapter = new MySqlDataAdapter();
             DataTable table = new DataTable();
@@ -317,6 +333,8 @@ namespace MosEnergo2._0
             MySqlCommand command5 = new MySqlCommand("SELECT * FROM `semshik` WHERE `passport` = @Passport", db.GetConnection());
             MySqlCommand command6 = new MySqlCommand("SELECT * FROM `checki` WHERE `id_check` = @IDCheck", db.GetConnection());
 
+            // 08.02.2023 9:36
+            // Заполнение запросов в БД
             command.Parameters.Add("@IDKvartira", MySqlDbType.VarChar).Value = IDKvartiri;
 
             adapter.SelectCommand = command;
@@ -362,9 +380,11 @@ namespace MosEnergo2._0
                 adapter.Fill(table6);
             }
 
+            // Выделение памяти для создания документа
             var helper = new WordHelper("ШаблонСчетаТ3.docx");
             var items = new Dictionary<string, string> { };
 
+            // 08.02.2023 13:28:16
             // Параметры составления шаблона
             if (table3.Rows.Count == 0)
             {
@@ -373,7 +393,8 @@ namespace MosEnergo2._0
                 items = new Dictionary<string, string>
                 {
                 {"<date>", table4.Rows[0][5].ToString().Replace("0:00:00","") }, //check
-                {"<FIO>", table5.Rows[0][1].ToString() + " " + table5.Rows[0][2].ToString() + " " +table5.Rows[0][3].ToString()}, //semshikc
+                {"<FIO>", table5.Rows[0][1].ToString() + " " + table5.Rows[0][2].ToString() + " " 
+                + table5.Rows[0][3].ToString()}, //semshikc
                 {"<Adress>", table.Rows[0][7].ToString() }, // kvartira
                 {"<Flat>",  table.Rows[0][1].ToString() }, //kvartira
                 {"<People>",  table.Rows[0][3].ToString()}, //kvartira
@@ -390,7 +411,8 @@ namespace MosEnergo2._0
                 {
                 {"<date>", table4.Rows[0][5].ToString().Replace("0:00:00","") }, //check
                 {"<NShetchik>", table3.Rows[0][0].ToString() }, // shetchik
-                {"<FIO>", table5.Rows[0][1].ToString() + " " + table5.Rows[0][2].ToString() + " " +table5.Rows[0][3].ToString()}, //semshikc
+                {"<FIO>", table5.Rows[0][1].ToString() + " " + table5.Rows[0][2].ToString() + " " 
+                + table5.Rows[0][3].ToString()}, //semshikc
                 {"<Adress>", table.Rows[0][7].ToString() }, // kvartira
                 {"<Flat>",  table.Rows[0][1].ToString() }, //kvartira
                 {"<People>",  table.Rows[0][3].ToString()}, //kvartira
@@ -404,9 +426,12 @@ namespace MosEnergo2._0
                 {"<TarF1>", table2.Rows[0][6].ToString()}, //Tarifi
                 {"<TarF2>", table2.Rows[0][4].ToString()}, //Tarifi
                 {"<TarF3>", table2.Rows[0][5].ToString()}, //Tarifi
-                {"<TP1>", Convert.ToString(((double)table4.Rows[0][1] - (table6 == null ? 0 :(double)table6.Rows[0][1])) * (double)table2.Rows[0][6])}, // Расчитать
-                {"<TP2>", Convert.ToString(((double)table4.Rows[0][2] - (table6 == null ? 0 :(double)table6.Rows[0][2]))* (double)table2.Rows[0][4])}, // Расчитать
-                {"<TP3>", Convert.ToString(((double)table4.Rows[0][3] - (table6 == null ? 0 :(double)table6.Rows[0][3])) * (double)table2.Rows[0][5])}, // Расчитать
+                {"<TP1>", Convert.ToString(((double)table4.Rows[0][1] - (table6 == null ? 0 :(double)table6.Rows[0][1])) 
+                * (double)table2.Rows[0][6])}, // Расчитать
+                {"<TP2>", Convert.ToString(((double)table4.Rows[0][2] - (table6 == null ? 0 :(double)table6.Rows[0][2]))
+                * (double)table2.Rows[0][4])}, // Расчитать
+                {"<TP3>", Convert.ToString(((double)table4.Rows[0][3] - (table6 == null ? 0 :(double)table6.Rows[0][3])) 
+                * (double)table2.Rows[0][5])}, // Расчитать
                 {"<Total>", table4.Rows[0][4].ToString() + " Руб."}, //check
                 };
             }
@@ -419,7 +444,8 @@ namespace MosEnergo2._0
                 {
                 {"<date>", table4.Rows[0][5].ToString().Replace("0:00:00","") }, //check
                 {"<NShetchik>", table3.Rows[0][0].ToString() }, // shetchik
-                {"<FIO>", table5.Rows[0][1].ToString() + " " + table5.Rows[0][2].ToString() + " " +table5.Rows[0][3].ToString()}, //semshikc
+                {"<FIO>", table5.Rows[0][1].ToString() + " " + table5.Rows[0][2].ToString() + " " 
+                + table5.Rows[0][3].ToString()}, //semshikc
                 {"<Adress>", table.Rows[0][7].ToString() }, // kvartira
                 {"<Flat>",  table.Rows[0][1].ToString() }, //kvartira
                 {"<People>",  table.Rows[0][3].ToString()}, //kvartira
@@ -430,8 +456,10 @@ namespace MosEnergo2._0
                 {"<P2>", table4.Rows[0][2].ToString()},//
                 {"<TarF1>", table2.Rows[0][3].ToString()}, //Tarifi
                 {"<TarF2>", table2.Rows[0][4].ToString()}, //
-                {"<TP1>", Convert.ToString(((double)table4.Rows[0][1] - (table6 == null ? 0 :(double)table6.Rows[0][1])) * (double)table2.Rows[0][3])}, // Расчитать
-                {"<TP2>", Convert.ToString(((double)table4.Rows[0][2] - (table6 == null ? 0 :(double)table6.Rows[0][2]))* (double)table2.Rows[0][4])}, //
+                {"<TP1>", Convert.ToString(((double)table4.Rows[0][1] - (table6 == null ? 0 :(double)table6.Rows[0][1])) 
+                * (double)table2.Rows[0][3])}, // Расчитать
+                {"<TP2>", Convert.ToString(((double)table4.Rows[0][2] - (table6 == null ? 0 :(double)table6.Rows[0][2]))
+                * (double)table2.Rows[0][4])}, //
                 {"<Total>", table4.Rows[0][4].ToString() + " Руб."}, //check
                 };
             }
@@ -444,7 +472,8 @@ namespace MosEnergo2._0
                 {
                 {"<date>", table4.Rows[0][5].ToString().Replace("0:00:00","") }, //check
                 {"<NShetchik>", table3.Rows[0][0].ToString() }, // shetchik
-                {"<FIO>", table5.Rows[0][1].ToString() + " " + table5.Rows[0][2].ToString() + " " +table5.Rows[0][3].ToString()}, //semshikc
+                {"<FIO>", table5.Rows[0][1].ToString() + " " + table5.Rows[0][2].ToString() + " " 
+                + table5.Rows[0][3].ToString()}, //semshikc
                 {"<Adress>", table.Rows[0][7].ToString() }, // kvartira
                 {"<Flat>",  table.Rows[0][1].ToString() }, //kvartira
                 {"<People>",  table.Rows[0][3].ToString()}, //kvartira
@@ -452,15 +481,20 @@ namespace MosEnergo2._0
                 {"<OldDate>", table6 == null ? "" : table6.Rows[0][5].ToString().Replace("0:00:00","")},//check
                 {"<P1>", table4.Rows[0][1].ToString() },//check
                 {"<TarF1>", table2.Rows[0][5].ToString()}, //Tarifi
-                {"<TP1>", Convert.ToString(((double)table4.Rows[0][1] - (table6 == null ? 0 :(double)table6.Rows[0][1])) * (double)table2.Rows[0][5])}, // Расчитать
+                {"<TP1>", Convert.ToString(((double)table4.Rows[0][1] - (table6 == null ? 0 :(double)table6.Rows[0][1])) 
+                * (double)table2.Rows[0][5])}, // Расчитать
                 {"<Total>", table4.Rows[0][4].ToString() + " Руб."}, //check
                 };
             }
 
+            // 08.02.2023 9:33
+            // Шаблон для названия файла
             helper.dateP = table4.Rows[0][5].ToString().Replace("0:00:00", "");
             helper.adress = table.Rows[0][7].ToString();
             helper.flat = table.Rows[0][1].ToString();
 
+            // 08.02.2023 9:33
+            // Проверка статуса транзакции
             if (helper.Process(items) == true)
             {
                 MessageBox.Show(this, "Документ был успешно созадан!", "Успех!", MessageBoxButtons.OK, MessageBoxIcon.Information);
